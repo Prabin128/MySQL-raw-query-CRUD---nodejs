@@ -22,6 +22,9 @@ dbConnection.connect((err) => {
 //Fetching all employees from the database               
 app.get('/employees', (req, res) => { // Defining route
 
+/*
+                                // Method 1
+
     dbConnection.query('SELECT * FROM Employee', (err, rows, fields) => {
         if(!err){
             //console.log(rows);
@@ -31,14 +34,30 @@ app.get('/employees', (req, res) => { // Defining route
             console.log(err);
         }
     });
+*/
+
+                                //Method 2
+    let sqlQuery =  `SELECT * FROM Employee`;
+    dbConnection.query(sqlQuery, (err, results) => {
+        if(!err){
+            res.send(results);
+        }else {
+            res.send(err);
+        }
+    });
+
 });
 
 
+
 //Get employee By ID
+app.get('/employees/:id', (req, res) => { // here in  "/:id", we are going to put actual id in URL
 
-app.get('/employees/:id', (req, res) => { // Defining route
+/*
+                                 //Method 1
 
-    dbConnection.query('SELECT * FROM Employee WHERE EmpID = ?',[req.params.id], (err, rows, fields) => {
+    let sqlQuery = `SELECT * FROM Employee WHERE EmpID = ?`
+    dbConnection.query(sqlQuery, [req.params.id], (err, rows, fields) => {
         if(!err){
             //console.log(rows);
             //console.log(rows[0].Name);  /// this way we can access any thing from the database 
@@ -46,6 +65,17 @@ app.get('/employees/:id', (req, res) => { // Defining route
         }else{
             console.log(err);
         }
+    });
+*/
+                                        //Method 2
+    let sqlQuery = `SELECT * FROM Employee WHERE EmpID= ${req.params.id}`;//for our query, we are going to use variable i.e " id as 1,2.. " so we use backtick instead of normal one coz that allows us to use a variable in query
+                                                      // mathiko req.params.id chai url ma vako "/employees/:id" ma vako id ko value taanera.. query ko tei id ko value select garera display gardinxa...
+    dbConnection.query(sqlQuery, (err,results) => {
+        if(!err)
+            res.send(results);
+            //console.log(results);
+        else
+            res.send(err);
     });
 });
 
@@ -91,16 +121,7 @@ app.get('/employees/:id', (req, res) => { // Defining route
 // //     });
 // // });
 
-// // // select all the post from the table
-// // app.get('/getposts', (req, res) => {
-// //     let sql = 'SELECT * FROM posts';
-// //     let query = db.query(sql, (err, results) => {
-// //         if (err) throw err;
-// //         console.log(results);
-// //         res.send('ALL the Posts fetched....')
-        
-// //     });
-// // });
+
 
 // // // select single/individual post from the table
 // // app.get('/getposts/:id', (req, res) => {   // here in  "/:id", we are going to put actual id in URL
