@@ -1,19 +1,8 @@
-const mysql = require('mysql');
+const dbConnection = require('./connection')
 const express =  require('express');
 const app = express();
 const bodyparser = require('body-parser');
 app.use(bodyparser.json());
-
-
-
-//Create connection 
-const dbConnection = mysql.createConnection ({
-
-    host : 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'nodemysqlcrud'      
-});
 
 
 
@@ -30,12 +19,30 @@ dbConnection.connect((err) => {
 
 
 
-//Fetching data form the database Table              // Defining route
-app.get('/employees', (req, res) => {
+//Fetching all employees from the database               
+app.get('/employees', (req, res) => { // Defining route
+
     dbConnection.query('SELECT * FROM Employee', (err, rows, fields) => {
         if(!err){
             //console.log(rows);
-            console.log(rows[0].Name);  /// this way we can access any thing from the database 
+            //console.log(rows[0].Name);  /// this way we can access any thing from the database 
+            res.send(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+
+//Get employee By ID
+
+app.get('/employees/:id', (req, res) => { // Defining route
+
+    dbConnection.query('SELECT * FROM Employee WHERE EmpID = ?',[req.params.id], (err, rows, fields) => {
+        if(!err){
+            //console.log(rows);
+            //console.log(rows[0].Name);  /// this way we can access any thing from the database 
+            res.send(rows);
         }else{
             console.log(err);
         }
