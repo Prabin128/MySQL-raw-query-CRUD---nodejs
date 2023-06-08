@@ -19,6 +19,42 @@ dbConnection.connect((err) => {
 
 
 
+                                                    //Inserting Data in Database (Create)
+
+//Inserting  a  single new employee in the Employee Table 
+app.get('/addemployee', (req, res) => {
+    let newEmployee = {Name: 'Bijay Dai', EmpCode : 'EMP006',EmpEmail : 'bijaydai@gmail.com',Salary : 50000};  // creating our data 
+    let sql = 'INSERT INTO Employee SET?';  //creating our query
+    dbConnection.query(sql, newEmployee, (err, result) => {   //In the query, passing "sql" and this SET ? ,here question-mark is like a placeholder for what we put in 2nd argument i.e in "post"So we put there as an actual data i.e "post" 
+        if (err) throw err;
+        console.log(result);
+        res.send('Employee' + ' '+`${newEmployee.Name}` + ' ' + 'added....');
+    });
+});
+
+//Inserting multiple employees/rows in the Employee Table 
+app.get('/addmultipleemployee', (req, res) => {
+
+    let sql = ` INSERT INTO Employee (
+                        Name, EmpCode, EmpEmail, Salary
+                    ) 
+                VALUES
+                     ("Nitish Neupane", "EMP008", "nitish21@gmail.com",60000),
+                     ("Prakash Acharya", "EMP009", "prakashacharya21@gmail.com",69000),
+                     ("Rabin Pokhrel", "EMP0010", "rabinjhyape89@gmail.com",30000),
+                     ("Susan ADK", "EMP0011", "susandai00@gmail.com",00000); ` ;
+
+    dbConnection.query(sql,  (err, result) => {   
+        if (err) throw err;
+        console.log(result);
+        res.send('Employee' + ' ' + 'added....');
+    });
+});
+
+
+
+                                        //Reading the datas from the Table=> "Employee" of the Database => "nodemysqlcrud" 
+
 //Fetching all employees from the database               
 app.get('/employees', (req, res) => { // Defining route
 
@@ -67,6 +103,7 @@ app.get('/employees/:id', (req, res) => { // here in  "/:id", we are going to pu
         }
     });
 */
+
                                         //Method 2
     let sqlQuery = `SELECT * FROM Employee WHERE EmpID= ${req.params.id}`;//for our query, we are going to use variable i.e " id as 1,2.. " so we use backtick instead of normal one coz that allows us to use a variable in query
                                                       // mathiko req.params.id chai url ma vako "/employees/:id" ma vako id ko value taanera.. query ko tei id ko value select garera display gardinxa...
@@ -77,35 +114,41 @@ app.get('/employees/:id', (req, res) => { // here in  "/:id", we are going to pu
         else
             res.send(err);
     });
+
 });
 
-                                                    //Inserting Data in Database (Create)
 
-//Inserting  a new employee in the Employee Table 
-app.get('/addemployee', (req, res) => {
-    let newEmployee = {Name: 'Bijay Dai', EmpCode : 'EMP006',EmpEmail : 'bijaydai@gmail.com',Salary : 50000};  // creating our data 
-    let sql = 'INSERT INTO Employee SET?';  //creating our query
-    dbConnection.query(sql, newEmployee, (err, result) => {   //db.query and pass "sql" and this SET ? ,here question-mark is like a placeholder for what we put in 2nd argument i.e in "post"So we put there as an actual data i.e "post" 
-        if (err) throw err;
-        console.log(result);
-        res.send('Employee' + ' '+`${newEmployee.Name}` + ' ' + 'added....');
+
+                                                //SQL UPDATE Statement
+
+//Updating from id 
+app.get('/updateemployee/:id', (req, res) => {  
+    
+    let sql = `UPDATE employee 
+               SET  Name = 'Amrit Bakabal', Salary = 89000, EmpEmail = 'amritlaurey@gmail.com' 
+               WHERE  EmpID = ${req.params.id}` ;
+    let query = dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        res.send('Employee Updated Succesfully !!');
     });
+        
 });
 
-//Inserting multiple employees/rows in the Employee Table 
-app.get('/addmultipleemployee', (req, res) => {
-    //let newEmployee = {Name: 'Sushant Malla Dai ', EmpCode : 'EMP007',EmpEmail : 'sushantdai@gmail.com',Salary : 500000};  // creating our data 
-    let sql = `INSERT INTO Employee (Name, EmpCode, EmpEmail,Salary) 
-               VALUES("Nitish Neupane", "EMP008", "nitish21@gmail.com",60000),
-                     ("Prakash Acharya", "EMP009", "prakashacharya21@gmail.com",69000),
-                     ("Rabin Pokhrel", "EMP0010", "rabinjhyape89@gmail.com",30000),
-                     ("Susan ADK", "EMP0011", "susandai00@gmail.com",00000);` ;
-    dbConnection.query(sql,  (err, result) => {   
-        if (err) throw err;
-        console.log(result);
-        res.send('Employee' + ' ' + 'added....');
+
+//Updating from Salary   ==> Updating into average salary (i.e 39000) whose salary is 0 in the table 
+app.get('/updateSalaryOfEmployee', (req, res) => {  
+    
+    let sql = `UPDATE employee 
+               SET  Salary = 39000
+               WHERE  Salary = 0 ` ;
+    let query = dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        res.send('Employee Updated Succesfully !!');
     });
-});
+        
+}); 
+
+
 
 
 
