@@ -79,6 +79,59 @@ app.get('/employees/:id', (req, res) => { // here in  "/:id", we are going to pu
     });
 });
 
+                                                    //Inserting Data in Database (Create)
+
+//Inserting  a new employee in the Employee Table 
+app.get('/addemployee', (req, res) => {
+    let newEmployee = {Name: 'Bijay Dai', EmpCode : 'EMP006',EmpEmail : 'bijaydai@gmail.com',Salary : 50000};  // creating our data 
+    let sql = 'INSERT INTO Employee SET?';  //creating our query
+    dbConnection.query(sql, newEmployee, (err, result) => {   //db.query and pass "sql" and this SET ? ,here question-mark is like a placeholder for what we put in 2nd argument i.e in "post"So we put there as an actual data i.e "post" 
+        if (err) throw err;
+        console.log(result);
+        res.send('Employee' + ' '+`${newEmployee.Name}` + ' ' + 'added....');
+    });
+});
+
+//Inserting multiple employees/rows in the Employee Table 
+app.get('/addmultipleemployee', (req, res) => {
+    //let newEmployee = {Name: 'Sushant Malla Dai ', EmpCode : 'EMP007',EmpEmail : 'sushantdai@gmail.com',Salary : 500000};  // creating our data 
+    let sql = `INSERT INTO Employee (Name, EmpCode, EmpEmail,Salary) 
+               VALUES("Nitish Neupane", "EMP008", "nitish21@gmail.com",60000),
+                     ("Prakash Acharya", "EMP009", "prakashacharya21@gmail.com",69000),
+                     ("Rabin Pokhrel", "EMP0010", "rabinjhyape89@gmail.com",30000),
+                     ("Susan ADK", "EMP0011", "susandai00@gmail.com",00000);` ;
+    dbConnection.query(sql,  (err, result) => {   
+        if (err) throw err;
+        console.log(result);
+        res.send('Employee' + ' ' + 'added....');
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // //Create DB               // route define gareko
 // app.get('/createdb', (req, res) => {
 //     let sql = 'CREATE DATABASE nodemysqlcrud';
