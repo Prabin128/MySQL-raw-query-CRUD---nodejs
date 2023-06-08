@@ -150,27 +150,14 @@ app.get('/updateSalaryOfEmployee', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//delete employee  
+app.get('/deleteEmployee/:id', (req, res) => {
+    let sql = `DELETE FROM Employee WHERE EmpID = ${req.params.id}`;
+    dbConnection.query (sql, (err, result) => {
+        if (err) throw err;
+        res.send('Empoyee deleted Succesfully..');
+    });
+});
 
 
 
@@ -195,64 +182,7 @@ app.get('/updateSalaryOfEmployee', (req, res) => {
 // //     });
 // // });
 
-// // //insert the data in post table ...   insert post 1
-// // app.get('/addpost1', (req, res) => {
-// //     let post = {title: 'Post one', body : 'This is post one'};  // creating our data 
-// //     let sql = 'INSERT INTO posts SET?';  //creating our query
-// //     let query = db.query(sql, post, (err, result) => {   //db.query and pass "sql" and this SET ? ,here question-mark is like a placeholder for what we put in 2nd argument i.e in "post"So we put there as an actual data i.e "post" 
-// //         if (err) throw err;
-// //         console.log(result);
-// //         res.send('Post 1 added....');
-// //     });
-// // });
 
-// // //insert post 2 
-// // app.get('/addpost2', (req, res) => {
-// //     let post = {title: 'Post two', body: 'this is post two'};
-// //     let sql = 'INSERT INTO posts SET?';
-// //     let query = db.query(sql, post, (err, result) => {
-// //         if (err) throw err;
-// //         console.log(result);
-// //         res.send('Post 2 created....');
-// //     });
-// // });
-
-
-
-// // // select single/individual post from the table
-// // app.get('/getposts/:id', (req, res) => {   // here in  "/:id", we are going to put actual id in URL
-// //     let sql = `SELECT * FROM posts WHERE id = ${req.params.id}`; //for our query, we are going to use variable i.e " id as 1,2.. " so we use backtick instead of normal one coz that allows us to use a variable in query
-// //                                             // mathiko req.params.id chai url ma vako " getpost/id" ma vako id ko value taanera.. query ko tei id ko value select garera display gardinxa...
-// //     let query = db.query(sql, (err, result) => {
-// //         if (err) throw err;
-// //         console.log(result);
-// //         res.send('Posts fetched....')
-        
-// //     });
-// // });
-
-// // //update our posts
-// // app.get('/updateposts/:id', (req, res) => {   // here in  "/:id", we are going to put actual id in URL
-// //     let newTitle = 'Updated Title';
-// //     let sql = `UPDATE posts SET title = '${newTitle}' WHERE id = ${req.params.id}`; //for our query, we are going to use variable i.e " id as 1,2.. " so we use backtick instead of normal one coz that allows us to use a variable in query
-// //                                             // mathiko req.params.id chai url ma vako " getpost/id" ma vako id ko value taanera.. query ko tei id ko value select garera display gardinxa...
-// //     let query = db.query(sql, (err, result) => {
-// //         if (err) throw err;
-// //         console.log(result);
-// //         res.send('Posts Updated....')
-        
-// //     });
-// // });
-
-// // //delte post 
-// // app.get('/deleteposts/:id', (req, res) => {
-// //     let sql = `DELETE FROM posts WHERE id = ${req.params.id}`;
-// //     let query = db.query (sql, (err, result) => {
-// //         if (err) throw err;
-// //         console.log(result);
-// //         res.send('Post deleted..');
-// //     });
-// // });
 
 app.listen('3000', () => {
     console.log("server started on port 3000");
