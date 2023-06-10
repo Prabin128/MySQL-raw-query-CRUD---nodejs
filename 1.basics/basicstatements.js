@@ -5,7 +5,7 @@ const bodyparser = require('body-parser');
 app.use(bodyparser.json());
 
 
-                                            //create TAble in Database    
+                                            // 1. Create TAble in Database    
 app.get('/studenttable', (req, res) => {
     let sql = `CREATE TABLE Student(
                             StuID int(11) NOT NULL auto_increment, 
@@ -23,7 +23,7 @@ app.get('/studenttable', (req, res) => {
 
 
 
-                                            //SQL INSERT INTO STATEMENT    ==> Two Ways 
+                                            // 2. SQL INSERT INTO STATEMENT    ==> Two Ways 
 
 //1. Specify both the column names and values be inserted:  
 
@@ -60,9 +60,9 @@ app.get('/insertstudent', (req, res) => {
         let sql = ` INSERT INTO Student 
                     VALUES
                         (6, "Abhishek Adhikari", "Saljhandi", "9999999999"),
-                        (7, "AMrit BAkabal", "Shankhapur", "8888888888"),
+                        (7, "Abhishek Adhikari", "Shankhapur", "8888888888"),
                         (8, "Prakash Acharya", "Skngr", "9867936023"),
-                        (9, "Bijju Dai", "NEpathya college", "9867796046"); ` ;
+                        (9, "Prakash Acharya", "NEpathya college", "9867796046"); ` ;
 
     dbConnection.query(sql,  (err, result) => {   
     if (err) throw err;
@@ -72,17 +72,32 @@ app.get('/insertstudent', (req, res) => {
 });
 
 
-                                    //SELECT STATEMENT
-//SELECT Statement is used to selecct the data from the database
+                                            // 3. SELECT STATEMENT
+//SELECT * Statement is used to select the data from the database
 
 //Selecting all the columns from the database 
 app.get('/getallstudents', (req,res) => {
-    let sql = `SELECT * FROM Student `;
+    let sql = `SELECT * FROM Student `;                       // "SELECT * " for selecting all the columns from the table.
     dbConnection.query(sql, ( err, result) => {
         if(err) throw err;
         res.send(result);
 
-    })
+    });
+});
+
+
+                                            // 4. SQL SELECT DISTINCT Statement
+
+/* The SELECT DISTINCT statement is used to return only distinct (different) values.
+Inside a table, a column often contains many duplicate values; and sometimes you only want to list the different (distinct) values. 
+                    SELECT DISTINCT Syntax:  SELECT DISTINCT column1, column2, ...  FROM table_name; 
+*/
+app.get('/selectdistinct', (req,res) => {
+    let sql = `SELECT DISTINCT StuName, Phone FROM Student`
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        res.send(result);
+    });
 })
 
 
