@@ -92,13 +92,49 @@ app.get('/getallstudents', (req,res) => {
 Inside a table, a column often contains many duplicate values; and sometimes you only want to list the different (distinct) values. 
                     SELECT DISTINCT Syntax:  SELECT DISTINCT column1, column2, ...  FROM table_name; 
 */
-app.get('/selectdistinct', (req,res) => {
+app.get('/selectdistinct', (req, res) => {
     let sql = `SELECT DISTINCT StuName, Phone FROM Student`
     dbConnection.query(sql, (err, result) => {
         if(err) throw err;
         res.send(result);
     });
-})
+});
+
+                                            //5. SELECT INTO Statement
+
+/*
+The SELECT INTO statement copies data from one table into a new table.                                           
+MySQL does not support SELECT INTO [table]. It only supports SELECT INTO [variable] and can only do this one variable at a time.
+Similar query can be performed by below query..
+
+However, it's important to note that the SELECT INTO and also the below mentioned statement does not 
+preserve any indexes, constraints, or other properties of the original table, 
+and the new table will not have any primary keys or foreign keys defined by default. 
+Therefore, you may need to add these properties to the new table manually if necessary.
+*/
+  
+app.get('/copyingToAnotherDatabase', (req, res) => {
+    //MEthod 1
+    //let sql = `SELECT * FROM nodemysqlcrud.stud;`;
+
+    //Method 2
+    let sql = `CREATE table Stud1 as SELECT StuName, Phone FROM Student;`;  // we can select particular column while copying to another table
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        res.send(result);
+    });
+});
+
+                                        // 5. SQL WHERE Clause
+app.get('/studentWhereCondition', (req, res) => {
+    let sql =  `SELECT StuName, Address, Phone [IN externaldb]
+                FROM Student 
+                WHERE StuName = "Susan ADK" `;
+    dbConnection.query(sql, (err, result) => {
+        if (err) throw err; 
+        res.send(result);
+    })
+}) 
 
 
 
