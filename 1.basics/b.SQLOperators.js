@@ -8,16 +8,16 @@ app.use(bodyparser.json());
 
 
 
-                                        // 5. SQL WHERE Clause
+                                        // 10. SQL WHERE Clause
 
 /*WHERE Clause in MySQL is a keyword used to specify the exact criteria of data or rows that will be affected by the specified SQL statement. 
 The WHERE clause can be used with SQL statements like INSERT, UPDATE, SELECT, and DELETE to filter records and 
 perform various operations on the data.
 */
 
-                                        // 5.1. Arithmetic Operator 
+                                        // 10.1. Arithmetic Operator 
 
-// 5.1.1. "="  Operator
+// 10.1.1. "="  Operator
 app.get('/equaltooperator', (req, res) => {
     let sql =  `SELECT StuName, Address, Phone 
                 FROM Student 
@@ -28,8 +28,8 @@ app.get('/equaltooperator', (req, res) => {
     });
 });
 
-//5.1.2. "!=" Operator   ==>  	Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.
-// 5.1.3. "<>" Operator  ==> this is similar to "!=" operator.
+//10.1.2. "!=" Operator   ==>  	Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.
+// 10.1.3. "<>" Operator  ==> this is similar to "!=" operator.
 app.get('/notequaltooperator', (req, res) => {
     let sql =  `SELECT *
                 FROM Student 
@@ -40,7 +40,16 @@ app.get('/notequaltooperator', (req, res) => {
     });
 });
 
-
+//// 10.1.4. ">" Operator  ==> Checks if the value of left operand is greater than the value of right operand, if yes then condition becomes true.
+app.get('/greaterthanoperator', (req, res) => {
+    let sql =  `SELECT *
+                FROM Student 
+                WHERE StuName != 'Rabin Pokhrel' `;
+    dbConnection.query(sql, (err, result) => {
+        if (err) throw err; 
+        res.send(result);
+    });
+});
 
 
 app.listen('3000', () => {

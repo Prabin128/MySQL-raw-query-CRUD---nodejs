@@ -1,5 +1,3 @@
-// CReating Table 2. Inserting the data 3. SELECT Statement 
-
 const dbConnection = require('../connection');
 const express =  require('express');
 const app = express();
@@ -23,11 +21,73 @@ app.get('/studenttable', (req, res) => {
     });
 });
 
+                                            //2. SQL DROP TABLE Statement
+
+//The DROP TABLE statement is used to drop an existing table in a database. 
+app.get('/droptable', (req, res) => {
+    let sql = `DROP TABLE stud;`;
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('stud table deleted succesfully.... ');
+    });
+});
 
 
-                                            // 2. SQL INSERT INTO STATEMENT    ==> Two Ways 
+                                            //3. SQL ALTER TABLE Statement
 
-//1. Specify both the column names and values be inserted:  
+//The ALTER TABLE statement is used to add, delete, or modify columns and also used to add and drop various constraints in an existing table.
+
+//3.1.  ==> ALTER TABLE - ADD Column    ==> Trying to create additional columns as "Department" "StuMarks" in existing Student Table.
+app.get('/dropcolumn', (req, res) => {
+    let sql = `ALTER TABLE Student
+               DROP COLUMN willdropinfuture`;
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('Column "willdropinfuture" deleted  succesfully.... ');
+    });
+});
+
+//3.2.  ==> ALTER TABLE - DROP COLUMN   ==> Trying to delete column "willdropinfuture" form existing Student Table 
+app.get('/altertable', (req, res) => {
+    let sql = ` ALTER TABLE Student
+                ADD StuMArks VARCHAR(45) default null,
+                ADD Department VARCHAR(45) default null,
+                ADD DOB date,
+                ADD willdropinfuture VARCHAR(45) default null;  `;
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('Columns added succesfully.... ');
+    });
+});
+
+// 3.3.  ==> ALTER TABLE - ALTER/MODIFY DATATYPE  ==> Trying to change the datatype of dOB form date to year
+app.get('/renamecolumn', (req, res) => {
+    let sql = ` ALTER TABLE Student
+                RENAME COLUMN DOB to Dateofbirth;  `;
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('Columns renamed succesfully.... ');
+    });
+});
+
+// 3.4. ==> ALTER TABLE - ALTER/MODIFY DATATYPE  ==> Trying to modify the datatype of Dateofbirth from date to year
+app.get('/modifydatatype', (req, res) => {
+    let sql = ` ALTER TABLE Student
+                MODIFY COLUMN Dateofbirth year `;
+    dbConnection.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('Columns renamed succesfully.... ');
+    });
+});
+
+                                            // 4. SQL INSERT INTO STATEMENT    ==> Two Ways 
+
+// 4.1. Specify both the column names and values be inserted:  
 
      /* Syntax : INSERT INTO table_name (column1, column2, column3, ...)
                VALUES (value1, value2, value3, ...); */
@@ -50,7 +110,7 @@ app.get('/insertstudentsdetails', (req, res) => {
     });
 });
 
-//2. Specify only the Values 
+// 4.2. Specify only the Values 
 
 /*  If you are inserting all the values for all the columns of the table, then we dont have to specify the columns name. 
     But the order of the values is in the same order as columns in the table.
@@ -59,22 +119,27 @@ app.get('/insertstudentsdetails', (req, res) => {
                         VALUES (value1, value2, value3, ...);   */
 
 app.get('/insertstudent', (req, res) => {
-        let sql = ` INSERT INTO Student 
-                    VALUES
-                        (6, "Abhishek Adhikari", "Saljhandi", "9999999999"),
-                        (7, "Abhishek Adhikari", "Shankhapur", "8888888888"),
-                        (8, "Prakash Acharya", "Skngr", "9867936023"),
-                        (9, "Prakash Acharya", "NEpathya college", "9867796046"); ` ;
+    let sql = ` INSERT INTO Student 
+                VALUES
+                    (6, "Abhishek Adhikari", "Saljhandi", "9999999999"),
+                    (7, "Abhishek Adhikari", "Shankhapur", "8888888888"),
+                    (8, "Prakash Acharya", "Skngr", "9867936023"),
+                    (9, "Prakash Acharya", "NEpathya college", "9867796046"); ` ;
 
     dbConnection.query(sql,  (err, result) => {   
-    if (err) throw err;
-    console.log(result);
-    res.send('Students' + ' ' + 'added....');
+        if (err) throw err;
+        console.log(result);
+        res.send('Students' + ' ' + 'added....');
     });
 });
 
 
-                                            // 3. SELECT STATEMENT
+                                   // 5. Change/Modify the value of Multiple Columns in the table  
+
+
+
+
+                                            // 6. SELECT STATEMENT
 //SELECT * Statement is used to select the data from the database
 
 //Selecting all the columns from the database 
@@ -88,7 +153,7 @@ app.get('/getallstudents', (req,res) => {
 });
 
 
-                                            // 4. SQL SELECT DISTINCT Statement
+                                            // 7. SQL SELECT DISTINCT Statement
 
 /* The SELECT DISTINCT statement is used to return only distinct (different) values.
 Inside a table, a column often contains many duplicate values; and sometimes you only want to list the different (distinct) values. 
@@ -102,7 +167,7 @@ app.get('/selectdistinct', (req, res) => {
     });
 });
 
-                                            //5. SELECT INTO Statement
+                                            //8. SELECT INTO Statement
 
 /*
 The SELECT INTO statement copies data from one table into a new table.                                           
@@ -127,7 +192,9 @@ app.get('/copyingToAnotherDatabase', (req, res) => {
     });
 });
 
-                                        // 5. SQL WHERE Clause
+
+                                        // 9. SQL WHERE Clause
+
 app.get('/studentWhereCondition', (req, res) => {
     let sql =  `SELECT StuName, Address, Phone [IN externaldb]
                 FROM Student 
