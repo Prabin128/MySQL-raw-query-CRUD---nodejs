@@ -95,13 +95,13 @@ app.get('/modifydatatype', (req, res) => {
 app.get('/insertstudentsdetails', (req, res) => {
 
     let sql = ` INSERT INTO Student (
-                        StuName, Address, Phone
+                        StuName, Address, Phone, StuMArks, Department, Dateofbirth
                     ) 
                 VALUES
-                     ("Nitish Neupane", "MAnigram", "9867936043"),
-                     ("Prakash Acharya", "Shankhanagar", "9867936044"),
-                     ("Rabin Pokhrel", "Devinagar", "9867936045"),
-                     ("Susan ADK", "Butwal", "9867936046"); ` ;
+                     ("Nitish Neupane", "MAnigram", "9867936043", 100, IT, 2000),
+                     ("Prakash Acharya", "Shankhanagar", "9867936044" 80, Science, 1999),
+                     ("Rabin Pokhrel", "Devinagar", "9867936045", 70, Maths, 1880),
+                     ("Susan ADK", "Butwal", "9867936046", 81, IT, 2021); ` ;
 
     dbConnection.query(sql,  (err, result) => {   
         if (err) throw err;
@@ -121,10 +121,10 @@ app.get('/insertstudentsdetails', (req, res) => {
 app.get('/insertstudent', (req, res) => {
     let sql = ` INSERT INTO Student 
                 VALUES
-                    (6, "Abhishek Adhikari", "Saljhandi", "9999999999"),
-                    (7, "Abhishek Adhikari", "Shankhapur", "8888888888"),
-                    (8, "Prakash Acharya", "Skngr", "9867936023"),
-                    (9, "Prakash Acharya", "NEpathya college", "9867796046"); ` ;
+                    (6, "Abhishek Adhikari", "Saljhandi", "9999999999",  81, Science, 2021),
+                    (7, "AMrit BAkabal", "Shankhapur", "8888888888",  81, Science, 2022),
+                    (8, "Prakash Acharya", "Skngr", "9867936023",  81, Maths, 2023),
+                    (9, "Bijju Dai", "NEpathya college", "9867796046",  81, IT, 2024); ` ;
 
     dbConnection.query(sql,  (err, result) => {   
         if (err) throw err;

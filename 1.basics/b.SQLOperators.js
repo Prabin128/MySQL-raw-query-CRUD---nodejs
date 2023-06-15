@@ -44,13 +44,27 @@ app.get('/notequaltooperator', (req, res) => {
 app.get('/greaterthanoperator', (req, res) => {
     let sql =  `SELECT *
                 FROM Student 
-                WHERE StuName != 'Rabin Pokhrel' `;
+                WHERE StuName != 'Rabin Pokhrel' `; 
     dbConnection.query(sql, (err, result) => {
         if (err) throw err; 
         res.send(result);
     });
 });
 
+
+// Similary Arithmetic Operators are  : +, -, =, >, < , => , <= , <>, !<, >!
+
+                                                // 10.2. LOGICAL OPERATOR
+// 10.2.1. AND and OR Operator
+app.get('/andoroperator', (req, res) => {
+    let sql =  `SELECT *
+                FROM Student 
+                WHERE StuMArks = 100 AND Department = 'IT' OR Dateofbirth = 2023 `; 
+    dbConnection.query(sql, (err, result) => {
+        if (err) throw err; 
+        res.send(result);
+    });
+});
 
 app.listen('3000', () => {
     console.log("SERVER STARTED ON PORT 3000");
